@@ -1,0 +1,34 @@
+#map {
+    width: 75%;
+    height: 75%;
+    margin: auto;
+    border-style: solid;
+    border-color: black;
+}
+
+.accidents, .accidents svg {
+    position: absolute;
+}
+
+.accidents svg {
+    width: 115px;
+    height: 20px;
+    padding-right: 100px;
+    font: 10px sans-serif;
+    font-weight: 700;
+}
+
+.accidents circle {
+    display: inline-table;
+    stroke-width: 1.5px;
+}
+
+.key {
+    margin-left: 12.5%;
+    margin-right: 20px;
+    float: left;
+}
+
+.hidden {
+    display: none;
+}
