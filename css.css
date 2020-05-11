@@ -29,6 +29,30 @@
     float: left;
 }
 
+#tooltip {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 10px;
+    box-shadow: 5px 5px 5px black;
+    border-style: none;
+    border-width: 1px;
+    border-radius: 5px;
+}
+
+#tooltip * {
+    color: white;
+    margin: 0;
+    font-size: 12px;
+}
+
+#tooltip hr {
+    margin-bottom: 5px;
+}
+
+#tooltip tr td:nth-child(2n) {
+    text-align: center;
+}
+
 .hidden {
     display: none;
 }

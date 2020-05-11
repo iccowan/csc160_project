@@ -2,10 +2,21 @@ var initMap = function(accidents) {
     var map = new google.maps.Map(d3.select("#map").node(), {
         zoom: 3,
         center: new google.maps.LatLng(40, -99),
-        mapTypeId: google.maps.MapTypeId.HYBRID
+        mapTypeId: google.maps.MapTypeId.TERRAIN
     });
     
     createOverlay(map, accidents);
+    
+    // Create the event to add the city names when zooming in
+    google.maps.event.addListener(map, 'zoom_changed', function() {
+        // If we're in close enough, show the city name
+        if(map.getZoom() >= 6) {
+            d3.selectAll(".label").classed("hidden", false);
+        } else if(map.getZoom() < 6) {
+            // Hide the city name when zooming out
+            d3.selectAll(".label").classed("hidden", true);
+        }
+    });
 }
 
 var createOverlay = function(map, data) {
@@ -58,8 +69,11 @@ var createOverlay = function(map, data) {
                         d3.select("#fatal")
                             .text(accident.injuries.fatal);
                 
-                        // Show the tooltip
-                        d3.select("#tooltip").classed("hidden", false);
+                        // Show the tooltip in relation to the mouse
+                        //var mouse = d3.mouse(d3.select("body"));
+                        //console.log(mouse);
+                        
+                        d3.select("#tooltip").classed("hidden", false).style("left", d3.event.pageX).style("top", d3.event.pageY);
                     })
                     .on("mouseout", function() {
                         d3.select("#tooltip").classed("hidden", true);
@@ -72,18 +86,18 @@ var createOverlay = function(map, data) {
                     .attr("cy", padding)
                     .attr("fill", function(accident) {
                         if(accident.injuries.fatal > 0) {
-                            return "red";
+                            return "black";
                         } else {
-                            return "blue";
+                            return "gray";
                         }
                     })
                     .attr("stroke", function(accident) {
                         if(accident.timeOfYear == "summer") {
-                            return "yellow";
+                            return "blue";
                         } else if(accident.timeOfYear == "fall") {
-                            return "brown";
+                            return "yellow";
                         } else if(accident.timeOfYear == "winter") {
-                            return "white";
+                            return "gray";
                         } else {
                             return "green";
                         }
@@ -93,7 +107,7 @@ var createOverlay = function(map, data) {
             marker.append("text")
                     .attr("x", padding + 7)
                     .attr("y", padding)
-                    .classed("label", true)
+                    .classed("label", true).classed("hidden", true)
                     .text(function(accident) { return accident.location; });
         };
     }
